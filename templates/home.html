@@ -1,32 +1,33 @@
 <html>
 <head>
     <title>Data Generator</title>
-    <style>
-        .dataframe {
-            font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        .dataframe th, .dataframe td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .dataframe th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
     <h1> Data Frame </h1>
+    <form action="/" method="post" enctype="multipart/form-data" class="mt-3" >
+        <input type="file" class="file-upload" name="dataFile">
+        <input type="submit" name="action" value="Upload">
+    </form>
+
     <form action="/" method="post">
         <input type="submit" name="action" value="Generate random data frame">
+        <label> Units </label>
+            <select name="units4DataFrame" id="units4DataFrame">
+                <option value=5>5</option>
+                <option value=10>10</option>
+                <option value=50>50</option>
+                <option value=100>100</option>
+                <option value=1000>1000</option>
+            </select>
+
+        
     
         {% if dataFrame is not none %}
             {{ dataFrame|safe }}
-            <label> What Type of Graph you want ? </label>
+            <input type="submit" name="action" value="Restore">
+            <p></p>
+
+            <label> Export Graph </label>
             <select name="graphType" id="graphType">
                 <option value="lineGraph">Line graph</option>
                 <option value="squareGraph">Square graph</option>
@@ -46,13 +47,40 @@
                 {% endfor %}    
             </select>
 
-            <input type="submit" name="action" value="Graph Data">
+            <label>Export Format:</label>
+            <select name="graphFormat" id="graphFormat">
+                <option value="PNG">PNG</option>
+                <option value="PDF">PDF</option>
+            </select>
+
+            <input type="submit" name="action" value="Export">
             
             <p></p>
-            {% if graph is not none %}
-              <img src="{{ graph }}" alt="Graphic">
-            {% endif %}
+
+            <label> Filter Data </label>
+            <select name="filterColumn" id="filterColumn">
+                {% for column in columns %}
+                    <option value="{{ column }}"> {{ column }} </option>
+                {% endfor %}
+            </select>
+            <input type="text" id="filterValue" name="filterValue" placeholder="Row">
+            <input type="submit" name="action" value="Filter">
+
+           <p></p>
+           <label> Sort Data  </label>
+           <select name="sortColumn" id="sortColumn">
+            {% for column in columns %}
+                <option value="{{ column }}" > {{ column }} </option>
+            {% endfor %}
+           </select>
+
+            <select name="descendingValue" id="descendingValue">
+                <option value="False"> Ascending </option>
+                <option value="True"> Descending </option>
+           </select>
+           <input type="submit" name="action" value="Sort">
             
+
         {% endif %}
     </form>
 </body>
